@@ -1,6 +1,7 @@
 ### Introduce
 
 - This is a project scaffold using swagger driven style to develop backend api.
+- Please use `localhost` as your development page whe using swagger. if you use `127.0.0.1`, sometime it will cause cors domain issue at api proxy.
 
 ### Project Structure
 
@@ -40,6 +41,8 @@ NODE_ENV=development
 $ yarn
 $ yarn lift
 ```
+
+- open `http://127.0.0.1:3000/api-docs/`
 
 - Interactive API Doc Editor
 

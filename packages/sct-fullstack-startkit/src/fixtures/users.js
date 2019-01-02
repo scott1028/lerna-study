@@ -1,8 +1,6 @@
-'use strict';
+import faker from 'faker';
 
-var faker = require('faker');
-
-module.exports = () => {
+export default () => {
   const data = { users: [] };
   // Create 1000 users
   for (let idx = 0; idx < 25; idx++) {

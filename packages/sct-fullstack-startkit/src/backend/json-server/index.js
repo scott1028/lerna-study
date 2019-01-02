@@ -1,16 +1,15 @@
-'use strict';
-
 import jsonServer from 'json-server';
 
-const jsonServerRouter = jsonServer.router('src/fixtures/json-server-db.json');  // fake data from json-server
-const jsonServerMiddlewares = jsonServer.defaults();  // include cors, json-parse, log, etc
+const jsonServerRouter = jsonServer.router('src/fixtures/json-server-db.json'); // fake data from json-server
+const jsonServerMiddlewares = jsonServer.defaults(); // include cors, json-parse, log, etc
 
-export default app => {
-  if(process.env.NODE_ENV.includes('production'))
+export default (app) => {
+  if (process.env.NODE_ENV.includes('production')) {
     return;
+  }
 
   // allow cors for swagger
-  app.use(jsonServerMiddlewares);  // app.use(cors());
+  app.use(jsonServerMiddlewares); // app.use(cors());
 
   // optional Way#2: api scheme provided by json-server
   app.use('/api', jsonServerRouter);
@@ -20,16 +19,13 @@ export default app => {
   //
   // You can take a look at json-server/src/router.js:39 ~ 41
   jsonServerRouter.render = (req, res) => {
-    if(req.url.match(/^\/posts\/{0,1}$/) && req.method.match(/^GET$/)) {
+    if (req.url.match(/^\/posts\/{0,1}$/) && req.method.match(/^GET$/)) {
       res.status(200).jsonp({
         posts: res.locals.data,
         message: 'This is custom response format!!',
       });
-    }
-    else {
-      res.jsonp(res.locals.data);  // default render of json-server
+    } else {
+      res.jsonp(res.locals.data); // default render of json-server
     }
   };
-
-  return app;
-}
+};
