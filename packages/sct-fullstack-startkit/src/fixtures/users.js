@@ -5,7 +5,7 @@ export default () => {
   // Create 1000 users
   for (let idx = 0; idx < 25; idx++) {
     data.users.push({
-      id: idx + 1,
+      id: `${idx + 1}`,
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
