@@ -11,6 +11,10 @@
 
 - Your api server is here.
 
+##### src/frontend/App.jsx
+
+- Your frontend is here.
+
 ##### src/fixtures/**
 
 - Your fixtures for fake data server.
@@ -42,7 +46,7 @@ $ yarn
 $ yarn lift
 ```
 
-- open `http://127.0.0.1:3000/api-docs/`
+- open `http://127.0.0.1:3000/api-docs/` for api-doc or `http://127.0.0.1:3000` for web-interface
 
 - Interactive API Doc Editor
 

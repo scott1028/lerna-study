@@ -1,6 +1,5 @@
 const webpack = require('webpack');
-const nodeExternals = require('webpack-node-externals');
-// const path = require('path');
+// const nodeExternals = require('webpack-node-externals');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const dotenv = require('dotenv');
 
@@ -10,23 +9,24 @@ dotenv.config();
 // This will detect ./config/*** folder, it's a nodejs mechanism
 const mode = process.env.NODE_ENV || 'development';
 
-const apiConfig = {
+const uiConfig = {
   // `development|production`, such as minify output, etc, it will set to `process.env.NODE_ENV`
   mode,
   entry: {
     dist: [
-      './src/backend/index.es6.js', // this is multiple entrypoint combined with gulp.src
+      './src/frontend/index.es6.jsx', // this is multiple entrypoint combined with gulp.src
     ],
   },
   output: {
     filename: 'app.[name].js',
-    // path: path.resolve(__dirname, 'src/backend'), // this is replaced by gulp
+    // path: path.resolve(__dirname, 'src/backend'),  // this is replaced by gulp
   },
-  target: 'node',
-  externals: [
-    nodeExternals({ whitelist: ['webpack/hot/poll?1000'] }), // <-- because we need this module to mix in our entrypoint of dist.
-  ],
-  devtool: 'source-map', // enable sourcemap for debugging
+  target: 'web',
+  // Because we need this module to mix in our entrypoint of dist.
+  // externals: [
+  //   nodeExternals({whitelist: ['webpack/hot/poll?1000']}),
+  // ],
+  devtool: 'source-map',
   // for enable/disabled --watch for webpack for re-compile,
   // also it can could be integrated with HMR to work smoothly below plugins.
   watch: false,
@@ -48,13 +48,18 @@ const apiConfig = {
         ],
       },
       {
-        test: /\.yaml$/,
-        use: 'js-yaml-loader',
-      },
-      {
         test: /\.scss$/,
         use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it use publicPath in webpackOptions.output
+              publicPath: '../',
+            },
+          },
           'css-loader', // translates CSS into CommonJS
+          // 'postcss-loader', // for compatible css prefixer support for most browser
           'sass-loader', // compiles Sass to CSS, using Node Sass by default
         ],
       },
@@ -69,29 +74,16 @@ const apiConfig = {
     }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
-      // both options are optional
+      // Both options are optional if you won't to customize.
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
   ],
 };
 
-if (apiConfig.mode === 'development') {
-  apiConfig.watch = true;
-  apiConfig.entry.dist.unshift('webpack/hot/poll?1000'); // HMR Hook, it's in `node_modules/webpack/hot/poll.js`
-  apiConfig.output = {
-    ...apiConfig.output,
-    hotUpdateChunkFilename: '.hot/[id].[hash].hot-update.js', // move lots of *.hot-update.js files to `.hot` folder
-    hotUpdateMainFilename: '.hot/[hash].hot-update.json', // move lots of *.hot-update.json files to `.hot` folder
-  };
-  apiConfig.plugins = [
-    // BTW config.devServer.hot = { ... }
-    // if for devServer of webpack without 'webpack/hot/poll?1000' mixin
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    ...apiConfig.plugins,
-  ];
+if (uiConfig.mode === 'development') {
+  uiConfig.watch = true;
 }
 
-// Unresolved: multiple config will cause HMR incorrect.
-module.exports = apiConfig;
+// in gulpfile multiple config of webpack will cause HMR working incorrectly.
+module.exports = uiConfig;

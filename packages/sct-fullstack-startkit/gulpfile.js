@@ -5,6 +5,7 @@ const through = require('through2');
 const gutil = require('gulp-util');
 const jsYaml = require('js-yaml');
 const backendConfig = require('./config.backend.js');
+const frontendConfig = require('./config.frontend.js');
 
 gulp.task('webpack.backend', (done) => {
   gulp.src('./config.backend.js') // this is similar to one of multiple entrypoint of webpack
@@ -13,6 +14,15 @@ gulp.task('webpack.backend', (done) => {
     // Ref: https://github.com/shama/webpack-stream#multi-compiler-support
     .pipe(webpack(backendConfig))
     .pipe(gulp.dest('./dist')); // this is similar to output.path of webpack
+  done();
+});
+
+// if you only want a backend api project, you can disabled below.
+// also remember to remove `config.frontend.js`
+gulp.task('webpack.frontend', (done) => {
+  gulp.src('./config.frontend.js')
+    .pipe(webpack(frontendConfig))
+    .pipe(gulp.dest('./dist/public'));
   done();
 });
 
@@ -44,4 +54,4 @@ gulp.task('watch', () => {
   });
 });
 
-gulp.task('default', gulp.parallel(gulp.series('yaml', 'webpack.backend'), 'watch'), done => done());
+gulp.task('default', gulp.parallel(gulp.series('webpack.frontend', 'yaml', 'webpack.backend'), 'watch'), done => done());
