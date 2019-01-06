@@ -1,6 +1,7 @@
 import { createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import serialize from 'serialize-javascript';
 
 import reducer from './reducers';
 
@@ -8,6 +9,8 @@ const persistConfig = {
   key: 'root',
   storage,
   blacklist: ['auth'],
+  serialize: data => serialize(data),
+  deserialize: data => eval(`(${data})`), // eslint-disable-line
 };
 
 // For create persistent redux's store

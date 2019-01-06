@@ -1,11 +1,11 @@
 {
-  "name": "root",
+  "name": "lerna-study",
   "private": true,
   "devDependencies": {
     "lerna": "^3.8.4"
   },
   "scripts": {
-    "reset": "lerna exec rm -- -rf package-lock.json yarn.lock",
+    "preclean": "lerna exec rm -- -rf package-lock.json yarn.lock && rm -rf node_modules",
     "clean": "lerna exec rm -- -rf node_modules dist",
     "prelift": "yarn add react eslint-plugin-flowtype && lerna bootstrap && lerna run build --scope redux-persist",
     "lift": "lerna run lift --scope sct-fullstack-startkit"

@@ -2,6 +2,7 @@ import { ADD, SUB } from '../actions/counter';
 
 export const initialState = {
   total: 0,
+  testBtn: () => alert('click test!'),
 };
 
 /**
