@@ -86,5 +86,7 @@
   "peerDependencies": {
     "redux": ">4.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "react": "^16.7.0"
+  }
 }

@@ -23,13 +23,21 @@ const apiConfig = {
     // path: path.resolve(__dirname, 'src/backend'), // this is replaced by gulp
   },
   target: 'node',
+  // Cancel node_modules excluding rule
   externals: [
-    nodeExternals({ whitelist: ['webpack/hot/poll?1000'] }), // <-- because we need this module to mix in our entrypoint of dist.
+  // <-- because we need this module to mix in our entrypoint of dist.
+    nodeExternals({ whitelist: ['webpack/hot/poll?1000'] }),
   ],
   devtool: 'source-map', // enable sourcemap for debugging
   // for enable/disabled --watch for webpack for re-compile,
   // also it can could be integrated with HMR to work smoothly below plugins.
   watch: false,
+  // For Support Symbol Link in node_modules/**/*
+  // Ref: https://webpack.js.org/configuration/resolve/#resolve-symlinks
+  // Ref: https://segmentfault.com/a/1190000011100006
+  resolve: {
+    symlinks: true,
+  },
   module: {
     rules: [
       {

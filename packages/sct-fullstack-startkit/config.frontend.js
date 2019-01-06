@@ -30,6 +30,12 @@ const uiConfig = {
   // for enable/disabled --watch for webpack for re-compile,
   // also it can could be integrated with HMR to work smoothly below plugins.
   watch: false,
+  // For Support Symbol Link in node_modules/**/*
+  // Ref: https://webpack.js.org/configuration/resolve/#resolve-symlinks
+  // Ref: https://segmentfault.com/a/1190000011100006
+  resolve: {
+    symlinks: true,
+  },
   module: {
     rules: [
       {
